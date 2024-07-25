@@ -4,19 +4,16 @@ using Bloggie.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Bloggie.Web.Migrations
+namespace Bloggie.Web.Migrations.BloggieDb
 {
     [DbContext(typeof(BloggieDbContext))]
-    [Migration("20230306005821_adding comments")]
-    partial class addingcomments
+    partial class BloggieDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

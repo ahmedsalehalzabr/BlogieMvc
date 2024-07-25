@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Bloggie.Web.Migrations
+namespace Bloggie.Web.Migrations.BloggieDb
 {
     [DbContext(typeof(BloggieDbContext))]
-    [Migration("20230305212914_Adding like functionality")]
-    partial class Addinglikefunctionality
+    [Migration("20240725163630_bloggie")]
+    partial class bloggie
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,6 +85,32 @@ namespace Bloggie.Web.Migrations
                     b.ToTable("BlogPosts");
                 });
 
+            modelBuilder.Entity("Bloggie.Web.Models.Domain.BlogPostComment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BlogPostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogPostId");
+
+                    b.ToTable("BlogPostComment");
+                });
+
             modelBuilder.Entity("Bloggie.Web.Models.Domain.BlogPostLike", b =>
                 {
                     b.Property<Guid>("Id")
@@ -138,6 +164,15 @@ namespace Bloggie.Web.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Bloggie.Web.Models.Domain.BlogPostComment", b =>
+                {
+                    b.HasOne("Bloggie.Web.Models.Domain.BlogPost", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("BlogPostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Bloggie.Web.Models.Domain.BlogPostLike", b =>
                 {
                     b.HasOne("Bloggie.Web.Models.Domain.BlogPost", null)
@@ -149,6 +184,8 @@ namespace Bloggie.Web.Migrations
 
             modelBuilder.Entity("Bloggie.Web.Models.Domain.BlogPost", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("Likes");
                 });
 #pragma warning restore 612, 618
